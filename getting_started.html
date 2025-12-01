@@ -1,22 +1,22 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Getting Started &mdash; CloudCompare-PythonPlugin  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -31,11 +31,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CloudCompare-PythonPlugin
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CloudCompare-PythonPlugin
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -59,8 +63,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="python/cccorelib/index.html">cccorelib (Python)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python/pycc/index.html">pycc (Python)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cpp/qCC_db/index.html">qCC_db (C++)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cpp/CCCoreLib/index.html">CCCoreLib (C++)</a></li>
 </ul>
 
         </div>
@@ -76,8 +78,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Getting Started</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Getting Started</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -88,11 +90,11 @@
            <div itemprop="articleBody">
              
   <section id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h1>
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h1>
 <p>This plugin allows to run scripts in the 2 _CloudCompares_ ‘modes’: GUI &amp; CommandLine.</p>
 <section id="gui">
-<h2>GUI<a class="headerlink" href="#gui" title="Permalink to this heading"></a></h2>
-<p>In GUI, there are 3 actions:</p>
+<h2>GUI<a class="headerlink" href="#gui" title="Link to this heading"></a></h2>
+<p>In GUI, there are 4 actions:</p>
 <ul>
 <li><dl>
 <dt>The REPL (Read Print Eval Loop) which allows for quick testing of some actions.</dt><dd><img alt="_images/repl-icon.png" src="_images/repl-icon.png" />
@@ -118,7 +120,7 @@ that you can use.</p>
 </li>
 </ul>
 <section id="scripts">
-<h3>Scripts<a class="headerlink" href="#scripts" title="Permalink to this heading"></a></h3>
+<h3>Scripts<a class="headerlink" href="#scripts" title="Link to this heading"></a></h3>
 <p>The typical python script will need to import Python modules that provide access to
 functions and data-structures of cloudcompare:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># cccorelib contains definitions of tools, such as Cloud2Cloud distance,</span>
@@ -138,10 +140,10 @@ functions and data-structures of cloudcompare:</p>
 <p>CC will be an object of type <a class="reference internal" href="python/pycc/runtime.html#pycc.ccPythonInstance" title="pycc.ccPythonInstance"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycc.ccPythonInstance</span></code></a>.</p>
 </section>
 <section id="plugin">
-<h3>Plugin<a class="headerlink" href="#plugin" title="Permalink to this heading"></a></h3>
+<h3>Plugin<a class="headerlink" href="#plugin" title="Link to this heading"></a></h3>
 <p>It is also possible to create scripts or module that register actions
 that will then be launch-able from the Ui, a bit like regular C++ plugins do.</p>
-<p>In the plugin settings, you can indicate a path where custom python plugin are
+<p>In the plugin settings, you can indicate a path where custom python plugins are
 stored. When starting up, the indicated folder will be scanned and all python modules
 (.py files or folders) will be imported, which will allow them to register their actions
 using the <code class="xref py py-func docutils literal notranslate"><span class="pre">pycc.RegisterAction()</span></code> function.</p>
@@ -149,10 +151,16 @@ using the <code class="xref py py-func docutils literal notranslate"><span class
 the <a class="reference internal" href="python/pycc/runtime.html#pycc.PythonPluginInterface" title="pycc.PythonPluginInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycc.PythonPluginInterface</span></code></a>.
 See <a class="reference external" href="https://github.com/tmontaigu/CloudCompare-PythonPlugin/tree/master/script_examples/plugin_examples">this</a>
 for an example.</p>
+<p>Alternatively, CloudCompare-PythonPlugin will autodiscover plugins in your site-package directory.
+In order to achieve this, it levrages package metadata. All you have to do is to create a plugin
+with a “cloudcompare.plugins” entry group. Each entry of this group should point
+to a <a class="reference internal" href="python/pycc/runtime.html#pycc.PythonPluginInterface" title="pycc.PythonPluginInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycc.PythonPluginInterface</span></code></a> provided by your package.
+An example of a plugin package embedding such metadata can be found
+<a class="reference external" href="https://github.com/tmontaigu/CloudCompare-PythonPlugin/tree/master/script_examples/plugin_examples/cloudcompare-demo-plugin">here</a> .</p>
 </section>
 </section>
 <section id="command-line">
-<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this heading"></a></h2>
+<h2>Command Line<a class="headerlink" href="#command-line" title="Link to this heading"></a></h2>
 <p>Similarly a commandline script will start with the following lines:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cccorelib</span>
 <span class="kn">import</span> <span class="nn">pycc</span>
@@ -162,13 +170,13 @@ for an example.</p>
 </div>
 <p>CC will be an object of type <a class="reference internal" href="python/pycc/runtime.html#pycc.ccCommandLineInterface" title="pycc.ccCommandLineInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycc.ccCommandLineInterface</span></code></a>.</p>
 <p>To run in command line mode pass following option: <cite>-PYTHON_SCRIPT</cite></p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cloudcompare -PYTHON_SCRIPT my_script.py
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cloudcompare<span class="w"> </span>-PYTHON_SCRIPT<span class="w"> </span>my_script.py
 </pre></div>
 </div>
 <p>The plugin will take all arguments that follows the script name and populate
 python’s sys.argv with them:</p>
 <p>Example:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>/path/to/cloudcompare -PYTHON_SCRIPT my_script.py some_positional_arg --size <span class="m">50</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>/path/to/cloudcompare<span class="w"> </span>-PYTHON_SCRIPT<span class="w"> </span>my_script.py<span class="w"> </span>some_positional_arg<span class="w"> </span>--size<span class="w"> </span><span class="m">50</span>
 </pre></div>
 </div>
 <p>Python’s sys.argv will be equal to:

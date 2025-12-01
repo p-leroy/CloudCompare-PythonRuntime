@@ -7,9 +7,8 @@ Base
 
 ccObject
 ________
-.. seealso::
 
-    C++: :cpp:class:`ccObject`
+.. inheritance-diagram:: pycc.ccObject
 
 .. autoclass:: pycc.ccObject
     :members:
@@ -18,9 +17,9 @@ ________
 
 ccHObject
 _________
-.. seealso::
 
-    C++: :cpp:class:`ccHObject`
+.. inheritance-diagram:: pycc.ccHObject
+
 
 .. autoclass:: pycc.ccHObject
     :members:
@@ -36,9 +35,8 @@ PointCloud
 
 ccGenericPointCloud
 ___________________
-.. seealso::
 
-    C++: :cpp:class:`ccGenericPointCloud`
+.. inheritance-diagram:: pycc.ccGenericPointCloud
 
 .. autoclass:: pycc.ccGenericPointCloud
     :members:
@@ -47,12 +45,10 @@ ___________________
 
 ccPointCloud
 _____________
-.. seealso::
 
-    C++: :cpp:class:`ccPointCloud`
+.. inheritance-diagram:: pycc.ccPointCloud
 
 .. autoclass:: pycc.ccPointCloud
-    :inherited-members:
     :members:
     :undoc-members:
     :show-inheritance:
@@ -60,12 +56,10 @@ _____________
 
 ccPolyline
 __________
-.. seealso::
 
-    C++: :cpp:class:`ccPolyline`
+.. inheritance-diagram:: pycc.ccPolyline
 
 .. autoclass:: pycc.ccPolyline
-    :inherited-members:
     :members:
     :undoc-members:
     :show-inheritance:
@@ -78,9 +72,6 @@ Mesh
 
 ccGenericMesh
 _____________
-.. seealso::
-
-    C++: :cpp:class:`ccGenericMesh`
 
 .. autoclass:: pycc.ccGenericMesh
     :members:
@@ -89,9 +80,6 @@ _____________
 
 ccMesh
 ______
-.. seealso::
-
-    C++: :cpp:class:`ccMesh`
 
 .. autoclass:: pycc.ccMesh
     :members:
@@ -100,9 +88,6 @@ ______
 
 ccSubMesh
 _________
-.. seealso::
-
-    C++: :cpp:class:`ccSubMesh`
 
 .. autoclass:: pycc.ccSubMesh
     :members:

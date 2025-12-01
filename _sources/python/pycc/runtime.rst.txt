@@ -31,8 +31,6 @@ Runtime
     Returns the :class:`pycc.ccPythonInstance` object if the script is ran from
     the command line mode, otherwise returns `None`.
 
-.. autofunction:: pycc.RegisterAction
-
 
 .. autofunction:: pycc.InitQApplication
 
@@ -46,6 +44,10 @@ Runtime
 
 
 .. autoclass:: pycc.PythonPluginInterface
+    :members:
+    :undoc-members:
+
+.. autoclass:: pycc.Action
     :members:
     :undoc-members:
 
@@ -84,5 +86,21 @@ ccCommandLineInterface
 ______________________
 
 .. autoclass:: pycc.ccCommandLineInterface
+    :members:
+    :undoc-members:
+
+
+ccPickingHub
+____________
+
+.. autoclass:: pycc.ccPickingHub
+    :members:
+    :undoc-members:
+
+
+ccPickingListener
+_________________
+
+.. autoclass:: pycc.ccPickingListener
     :members:
     :undoc-members:
