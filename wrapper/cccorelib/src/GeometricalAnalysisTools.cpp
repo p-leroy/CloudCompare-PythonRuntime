@@ -42,7 +42,8 @@ void define_GeometricalAnalysisTools(py::module &cccorelib)
                                         "kernelRadius"_a,
                                         "roughnessUpDir"_a = nullptr,
                                         "progressCb"_a = nullptr,
-                                        "inputOctree"_a = nullptr);
+                                        "inputOctree"_a = nullptr,
+										"signCurvature"_a = CCCoreLib::Neighbourhood::DO_NOT_SIGN);
 
     GeometricalAnalysisTools.def_static("ComputeLocalDensityApprox",
                                         &GeometricalAnalysisTools::ComputeLocalDensityApprox,

@@ -236,6 +236,9 @@ Warning: P should NOT be part of the set of points.
              &Neighbourhood::computeCurvature,
              "P"_a,
              "cType"_a,
+             "globalIndex"_a = 0,
+             "signCurvature"_a = Neighbourhood::DO_NOT_SIGN,
+             "associatedCloud"_a = nullptr,
              R"doc(
 Computes the curvature at point P by fitting a 2.5D quadric.
 

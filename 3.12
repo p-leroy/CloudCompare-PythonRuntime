@@ -1,0 +1,52 @@
+conda-forge/noarch                                          Using cache
+conda-forge/win-64                                          Using cache
+
+
+Transaction
+
+  Prefix: C:\Users\pleroy\miniforge3\envs\pyccenv
+
+  Updating specs:
+
+   - python
+
+
+  Package                 Version  Build               Channel           Size
+-------------------------------------------------------------------------------
+  Install:
+-------------------------------------------------------------------------------
+
+  + bzip2                   1.0.8  h0ad9c76_9          conda-forge     Cached
+  + ca-certificates     2026.5.20  h4c7d964_0          conda-forge      130kB
+  + libexpat                2.8.1  hac47afa_0          conda-forge       71kB
+  + libffi                  3.5.2  h3d046cb_0          conda-forge     Cached
+  + liblzma                 5.8.3  hfd05255_0          conda-forge      106kB
+  + libmpdec                4.0.0  hfd05255_1          conda-forge     Cached
+  + libsqlite              3.53.1  hf5d6505_0          conda-forge        1MB
+  + libzlib                 1.3.2  hfd05255_2          conda-forge     Cached
+  + openssl                 3.6.2  hf411b9b_0          conda-forge        9MB
+  + pip                    26.1.1  pyh145f28c_0        conda-forge        1MB
+  + python                 3.14.5  h4b44e0e_100_cp314  conda-forge       18MB
+  + python_abi               3.14  8_cp314             conda-forge     Cached
+  + tk                     8.6.13  h6ed50ae_3          conda-forge     Cached
+  + tzdata                  2025c  hc9c84f9_1          conda-forge     Cached
+  + ucrt             10.0.26100.0  h57928b3_0          conda-forge     Cached
+  + vc                       14.5  h1b7c187_38         conda-forge       20kB
+  + vc14_runtime      14.51.36231  h1b9f54f_38         conda-forge      741kB
+  + vcomp14           14.51.36231  h1b9f54f_38         conda-forge      124kB
+  + zstd                    1.5.7  h534d264_6          conda-forge     Cached
+
+  Summary:
+
+  Install: 19 packages
+
+  Total download: 31MB
+
+-------------------------------------------------------------------------------
+
+
+Confirm changes: [Y/n] 
+Transaction starting
+Terminer le programme de commandes (O/N) ? 
+Terminer le programme de commandes (O/N) ? 
+Terminer le programme de commandes (O/N) ? Terminer le programme de commandes (O/N) ? Terminer le programme de commandes (O/N) ? Terminer le programme de commandes (O/N) ? Terminer le programme de commandes (O/N) ? Terminer le programme de commandes (O/N) ? 

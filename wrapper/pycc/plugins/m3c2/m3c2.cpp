@@ -28,8 +28,9 @@ ccPointCloud *ComputeWrapper(const qM3C2Dialog &dlg, bool allowDialogs)
         throw py::value_error("non null app pointer is not supported");
     }
 
+    ccPointCloud *tmp = nullptr;
     bool success =
-        qM3C2Process::Compute(dlg, errorMsg, outputCloud, allowDialogs, parentWidget, app);
+        qM3C2Process::Compute(dlg, errorMsg, outputCloud, tmp, allowDialogs, parentWidget, app);
     if (!success)
     {
         const std::string msg = errorMsg.toStdString();
@@ -61,7 +62,10 @@ void define_m3c2_plugin(py::module_ &m)
         .def("getCorePointsCloud",
              &qM3C2Dialog::getCorePointsCloud,
              py::return_value_policy::reference)
-        .def("setCorePointsCloud", &qM3C2Dialog::setCorePointsCloud, "cloud"_a)
+        .def("setCorePointsCloud",
+             &qM3C2Dialog::setCorePointsCloud,
+             "cloud"_a,
+             "withCPOtherCloudComboBoxUpdate"_a = true)
         .def("getNormalsOrientationCloud",
              &qM3C2Dialog::getNormalsOrientationCloud,
              py::return_value_policy::reference)
