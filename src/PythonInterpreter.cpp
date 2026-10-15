@@ -22,6 +22,8 @@
 
 #include <pybind11/embed.h>
 
+#include <memory>
+
 #include <QApplication>
 #include <QDir>
 #include <QListWidgetItem>
@@ -39,6 +41,72 @@
 #undef minor
 
 namespace py = pybind11;
+
+namespace
+{
+/// Formats a Python exception with its full cause/context chain, the way Python
+/// prints it to stderr. pybind11's `error_already_set::what()` only reports the
+/// leaf exception, which hides the original cause - for example a missing
+/// dependency behind a generic "ImportError: initialization failed".
+QString FormatPythonException(const py::error_already_set &error)
+{
+    try
+    {
+        const py::gil_scoped_acquire gil;
+        const py::module_ traceback = py::module_::import("traceback");
+        const py::list lines =
+            traceback.attr("format_exception")(error.type(), error.value(), error.trace());
+
+        QString formatted;
+        for (const py::handle line : lines)
+        {
+            formatted += QString::fromStdString(line.cast<std::string>());
+        }
+        return formatted.trimmed();
+    }
+    catch (const std::exception &)
+    {
+        // Fall back to the leaf message if formatting itself fails.
+        return QString::fromUtf8(error.what());
+    }
+}
+
+/// Returns the message to display for a caught exception, expanding Python
+/// exceptions into their full traceback.
+QString ExceptionText(const std::exception &error)
+{
+    if (const auto *pythonError = dynamic_cast<const py::error_already_set *>(&error))
+    {
+        return FormatPythonException(*pythonError);
+    }
+    return QString::fromUtf8(error.what());
+}
+
+/// cccorelib and pycc bind NumPy and import it while initializing their own
+/// modules. When the selected environment lacks NumPy those imports fail with an
+/// opaque "initialization failed" error, so detect it up front and tell the user
+/// how to fix it.
+void WarnIfNumPyIsMissing(const PythonConfig &config)
+{
+    try
+    {
+        const py::module_ importlibUtil = py::module_::import("importlib.util");
+        if (!importlibUtil.attr("find_spec")("numpy").is_none())
+        {
+            return;
+        }
+    }
+    catch (const py::error_already_set &)
+    {
+        // Fall through and warn: if NumPy cannot even be looked up, importing the
+        // wrappers will not work either.
+    }
+
+    plgWarning() << "NumPy was not found in the selected Python environment. The 'cccorelib' "
+                    "and 'pycc' modules require it and will fail to import. Install it with: "
+                 << config.pythonExecutable() << " -m pip install numpy";
+}
+} // namespace
 
 static py::dict CreateGlobals()
 {
@@ -74,7 +142,7 @@ bool PythonInterpreter::executeFile(const std::string &filepath)
     }
     catch (const std::exception &e)
     {
-        ccLog::Warning(e.what());
+        ccLog::Warning(ExceptionText(e));
         success = false;
     }
 
@@ -114,15 +182,16 @@ void PythonInterpreter::executeCodeString(const std::string &code,
     }
     catch (const std::exception &e)
     {
+        const QString text = ExceptionText(e);
         if (output)
         {
-            auto message = new QListWidgetItem(e.what());
+            auto message = new QListWidgetItem(text);
             message->setForeground(Qt::red);
             output->addItem(message);
         }
         else
         {
-            ccLog::Error(e.what());
+            ccLog::Error(text);
         }
     }
 
@@ -171,7 +240,7 @@ void PythonInterpreter::executeFunction(const pybind11::object &function)
     }
     catch (const std::exception &e)
     {
-        ccLog::Error("Failed to start Python actions: %s", e.what());
+        ccLog::Error(QStringLiteral("Failed to start Python actions: %1").arg(ExceptionText(e)));
     }
     m_isExecuting = false;
     Q_EMIT executionFinished();
@@ -222,40 +291,48 @@ void PythonInterpreter::initialize(const PythonConfig &config)
         //
         // https://www.python.org/dev/peps/pep-0587/
         // https://docs.python.org/3/c-api/init_config.html#init-python-config
-        m_config = config.pythonCompatiblePaths();
-        PyStatus status;
+        const ResolvedPythonPaths paths = config.resolvePaths();
+        if (!paths.isValid())
+        {
+            throw std::runtime_error(
+                "Failed to query the environment's Python interpreter for its configuration");
+        }
 
         PyConfig pyConfig;
         PyConfig_InitPythonConfig(&pyConfig);
         pyConfig.isolated = 1;
 
-        status = PyConfig_SetString(&pyConfig, &pyConfig.home, m_config.pythonHome());
-        if (PyStatus_Exception(status))
+        const auto check = [&pyConfig](PyStatus status)
         {
-            PyConfig_Clear(&pyConfig);
-            throw std::runtime_error(status.err_msg);
+            if (PyStatus_Exception(status))
+            {
+                const std::string message = status.err_msg ? status.err_msg : "unknown error";
+                PyConfig_Clear(&pyConfig);
+                throw std::runtime_error(message);
+            }
+        };
+
+        const auto setString = [&](wchar_t **field, const QString &value)
+        {
+            const std::unique_ptr<wchar_t[]> wide(QStringToWcharArray(value));
+            check(PyConfig_SetString(&pyConfig, field, wide.get()));
+        };
+
+        setString(&pyConfig.prefix, paths.prefix);
+        setString(&pyConfig.exec_prefix, paths.execPrefix);
+        setString(&pyConfig.base_prefix, paths.basePrefix);
+        setString(&pyConfig.base_exec_prefix, paths.baseExecPrefix);
+        setString(&pyConfig.executable, config.pythonExecutable());
+
+        pyConfig.module_search_paths_set = 1;
+        for (const QString &path : paths.moduleSearchPaths)
+        {
+            const std::unique_ptr<wchar_t[]> wide(QStringToWcharArray(path));
+            check(PyWideStringList_Append(&pyConfig.module_search_paths, wide.get()));
         }
 
-        status = PyConfig_SetString(&pyConfig, &pyConfig.pythonpath_env, m_config.pythonPath());
-        if (PyStatus_Exception(status))
-        {
-            PyConfig_Clear(&pyConfig);
-            throw std::runtime_error(status.err_msg);
-        }
-
-        status = PyConfig_Read(&pyConfig);
-        if (PyStatus_Exception(status))
-        {
-            PyConfig_Clear(&pyConfig);
-            throw std::runtime_error(status.err_msg);
-        }
-
-        status = Py_InitializeFromConfig(&pyConfig);
-        if (PyStatus_Exception(status))
-        {
-            PyConfig_Clear(&pyConfig);
-            throw std::runtime_error(status.err_msg);
-        }
+        check(PyConfig_Read(&pyConfig));
+        check(Py_InitializeFromConfig(&pyConfig));
     }
     else
     {
@@ -265,6 +342,17 @@ void PythonInterpreter::initialize(const PythonConfig &config)
     // Make sure this module is imported
     // so that we can later easily construct our consoles.
     py::module::import("ccinternals");
+
+#if !defined(USE_EMBEDDED_MODULES) && defined(Q_OS_WINDOWS)
+    // In non-embedded-modules builds the CloudCompare Python wrappers (pycc,
+    // cccorelib) are installed next to the application rather than inside the
+    // selected environment, so make that location importable.
+    const QString bundledSitePackages =
+        QApplication::applicationDirPath() + "/plugins/Python/Lib/site-packages";
+    py::module::import("sys").attr("path").attr("append")(bundledSitePackages.toStdString());
+#endif
+
+    WarnIfNumPyIsMissing(config);
 }
 
 bool PythonInterpreter::IsInitialized()
@@ -292,9 +380,4 @@ void PythonInterpreter::finalize()
 bool PythonInterpreter::isExecuting() const
 {
     return m_isExecuting;
-}
-
-const PythonConfigPaths &PythonInterpreter::config() const
-{
-    return m_config;
 }

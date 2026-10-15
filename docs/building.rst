@@ -32,7 +32,7 @@ to the CloudCompare documentation on how to do.
 To compile this plugin you need to have Python installed.
 
 This plugin is known to compile and work with CloudCompare
-commit `d17314ca8538e187bf12d4ebe97525d61886b735`.
+commit `4024ed1e288dcf0d35e13d3f46cf9c8522724854`.
 
 Python 3.9 or more is required to build as a plugin.
 

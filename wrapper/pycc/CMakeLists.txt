@@ -31,7 +31,7 @@ if(PYCC_IS_MASTER_PROJECT)
     GIT_REPOSITORY https://github.com/CloudCompare/CloudCompare
     GIT_SUBMODULES "libs/qCC_db/extern/CCCoreLib;libs/CCAppCommon/QDarkStyleSheet;plugins/core/IO/MeshIO;"
     GIT_PROGRESS ON
-    GIT_TAG 4223ad0b0aa13cc48c820a5c8c5b8ab72bcdaa9f
+    GIT_TAG d977b9460fd2ed13d3c82925c4521cca49e79da8
     GIT_SHALLOW OFF
     GIT_SUBMODULES
   )
@@ -41,6 +41,7 @@ if(PYCC_IS_MASTER_PROJECT)
   if(NOT CloudCompare_POPULATED)
     FetchContent_Populate(CloudCompare)
     set(CLOUDCOMPARE_SOURCES_ROOT ${${lowerCaseName}_SOURCE_DIR})
+    set(OPTION_SUPPORT_3DMOUSE_WITH_HIDAPI OFF CACHE INTERNAL "3D Mouse support") # We don't need that
     add_subdirectory(
       ${${lowerCaseName}_SOURCE_DIR} ${${lowerCaseName}_BINARY_DIR}
       EXCLUDE_FROM_ALL

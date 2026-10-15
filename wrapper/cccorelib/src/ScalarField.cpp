@@ -194,9 +194,9 @@ void define_ScalarField(py::module &cccorelib)
         .def("__getitem__", &ScalarFieldView::get_item, py::return_value_policy::reference_internal)
         .def("__setitem__", &ScalarFieldView::set_item);
 
-    py::class_<CCCoreLib::ScalarField, CCShareable, CCShareableHolder<CCCoreLib::ScalarField>>(cccorelib,
-                                                                                               "ScalarField",
-                                                                                               R"doc(
+    py::class_<CCCoreLib::ScalarField, std::shared_ptr<CCCoreLib::ScalarField>>(cccorelib,
+                                                                                "ScalarField",
+                                                                                R"doc(
     ScalarField
 
     .. note::
@@ -299,9 +299,7 @@ at the float level.
         .def("resetOffset",
              &CCCoreLib::ScalarField::resetOffset,
              "Resets the offset to 0.0 and marks it as 'not explicitly set'.")
-        .def("clear",
-             &CCCoreLib::ScalarField::clear,
-             "Empties the scalar field and resets the offset state.")
+        .def("clear", &CCCoreLib::ScalarField::clear, "Empties the scalar field and resets the offset state.")
         .def("invert",
              &CCCoreLib::ScalarField::invert,
              R"doc(

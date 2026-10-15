@@ -92,8 +92,8 @@ PythonPlugin::PythonPlugin(QObject *parent)
     {
         config = PythonConfig::fromContainingEnvironment();
         isDefaultPythonEnv = false;
-        plgPrint() << "CloudCompare was loaded from within a " << config.type() << "env. "
-                   << "Will try to use it";
+        plgPrint() << "CloudCompare was loaded from within a " << config.type()
+                   << " environment. Will try to use it";
     }
     else
     {
@@ -259,7 +259,7 @@ QList<QAction *> PythonPlugin::getActions()
         QStringList loaded_paths =
             settings->value(QStringLiteral("RegisterListPath")).value<QStringList>();
 
-        for (QString path : loaded_paths)
+        for (const QString& path : loaded_paths)
         {
             QFileInfo fi(path);
             if (!fi.exists())

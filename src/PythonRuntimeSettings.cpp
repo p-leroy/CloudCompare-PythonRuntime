@@ -15,7 +15,9 @@
 // #                                                                        #
 // ##########################################################################
 #include "PythonRuntimeSettings.h"
+#include "CreateVenvForm.h"
 #include "Resources.h"
+#include "Utilities.h"
 
 #include <ui_PathVariableEditor.h>
 #include <ui_PythonRuntimeSettings.h>
@@ -30,7 +32,11 @@
 #include <QStringListModel>
 #include <QtGlobal>
 
+#include <pybind11/pybind11.h>
+
 #include <memory>
+
+namespace py = pybind11;
 
 /// Simple Dialog that displays a Line Edit with a button next to it
 /// to let the user select a path to a directory
@@ -168,6 +174,8 @@ PythonRuntimeSettings::PythonRuntimeSettings(QWidget *parent)
             &QPushButton::clicked,
             this,
             &PythonRuntimeSettings::handleSelectLocalEnv);
+    connect(
+        m_ui->createVenvBtn, &QPushButton::clicked, this, &PythonRuntimeSettings::handleCreateVenv);
     restoreSettings();
     m_ui->informationLabel->hide();
 }
@@ -254,6 +262,44 @@ void PythonRuntimeSettings::handleSelectLocalEnv()
             m_ui->localEnvPathLabel->setText(selectedDir);
         }
     }
+}
+
+void PythonRuntimeSettings::handleCreateVenv()
+{
+    CreateVenvForm form(this);
+
+    if (form.exec() != QDialog::Accepted)
+    {
+        return;
+    }
+
+    const QString path = form.path();
+
+    try
+    {
+// On Windows we create the venv with ensurepip, to allow users to use the "Package Manager" GUI
+// with the newly created venv. ensurepip is only "sure" on Windows, Linux distro packages do not
+// "ensure" ensurepip (sic.). On macOS it should be sure, but macOS bundle has some quirks, so we
+// stay conservative for now.
+#if defined(Q_OS_WINDOWS)
+        const py::module_ venvModule = py::module_::import("venv");
+        const py::object envBuilder = venvModule.attr("EnvBuilder");
+        const py::object builder = envBuilder(py::arg("with_pip") = true);
+        const auto createVenvFn = builder.attr("create");
+#else
+        const auto createVenvFn = py::module_::import("venv").attr("create");
+#endif
+        createVenvFn(path);
+    }
+    catch (const std::exception &e)
+    {
+        plgError() << "Failed to create venv: " << e.what();
+        return;
+    }
+
+    m_ui->localEnvPathLabel->setText(path);
+    const int idx = m_ui->envTypeComboBox->findText("Local");
+    m_ui->envTypeComboBox->setCurrentIndex(idx);
 }
 
 QStringList PythonRuntimeSettings::pluginsPaths() const
